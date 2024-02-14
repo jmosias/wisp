@@ -4,13 +4,17 @@ import styles from "./page.module.css";
 import Image from "next/image";
 import mergeImages from "merge-images";
 import imageCompression from "browser-image-compression";
+import ImageWatermarker from "../(components)/ImageWatermarker";
+
+const SIZE = 2048;
 
 export default function Home() {
-  const [previewURLs, setPreviewURLs] = useState([]);
-  const [mergePreview, setMergePreview] = useState("");
+  const [compressedImages, setCompressedImages] = useState([]);
+  const [mergedImage, setMergedImage] = useState("");
 
   const handleChange = async (e) => {
-    setPreviewURLs(await compressImages(e.target.files));
+    setCompressedImages(await compressImages(e.target.files));
+    setMergedImage("");
   };
 
   const compressImages = async (imageFiles) => {
@@ -57,14 +61,13 @@ export default function Home() {
   };
 
   const handleMerge = () => {
-    const size = 2048;
     mergeImages(
       [
-        { src: previewURLs[0], x: 0, y: 0 },
-        { src: previewURLs[1], x: size / 2, y: 0 },
+        { src: compressedImages[0], x: 0, y: 0 },
+        { src: compressedImages[1], x: SIZE / 2, y: 0 },
       ],
-      { width: size, height: size }
-    ).then((src) => setMergePreview(src));
+      { width: SIZE, height: SIZE }
+    ).then((src) => setMergedImage(src));
   };
 
   return (
@@ -84,14 +87,24 @@ export default function Home() {
         </form>
       </div>
       <div className="input-images">
-        {previewURLs.map((url) => (
-          <Image key={url} src={url} alt="" width={150} height={200} />
+        <h4>COMPRESSED IMAGES</h4>
+        {compressedImages.map((image) => (
+          <Image key={image} src={image} alt="" width={150} height={200} />
         ))}
       </div>
       <button onClick={handleMerge}>MERGE</button>
       <div>
-        {mergePreview && (
-          <Image src={mergePreview} alt="" width={300} height={300}></Image>
+        {mergedImage && (
+          <Image src={mergedImage} alt="" width={200} height={200}></Image>
+        )}
+      </div>
+      <div>
+        <h4>Watermarked</h4>
+        {compressImages.length > 0 && (
+          <ImageWatermarker
+            imageUrls={compressedImages}
+            startCode={"A123456"}
+          />
         )}
       </div>
     </main>
