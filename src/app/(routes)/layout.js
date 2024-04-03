@@ -1,5 +1,6 @@
-import "./globals.css";
 import { Krub } from "next/font/google";
+import "../globals.css";
+import UIProvider from "../_components/UIProvider";
 
 const krub = Krub({
   subsets: ["latin"],
@@ -10,13 +11,15 @@ const krub = Krub({
 
 export const metadata = {
   title: "Wisp",
-  description: "Batch watermark",
+  description: "Batch image processor",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={krub.className}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={krub.className}>
+        <UIProvider>{children}</UIProvider>
+      </body>
     </html>
   );
 }

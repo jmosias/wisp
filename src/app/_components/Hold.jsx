@@ -1,14 +1,13 @@
 "use client";
 import { useState } from "react";
-import styles from "./page.module.css";
 import Image from "next/image";
 import mergeImages from "merge-images";
 import imageCompression from "browser-image-compression";
-import ImageWatermarker from "../(components)/ImageWatermarker";
+import ImageWatermarker from ".ImageWatermarker";
 
 const SIZE = 2048;
 
-export default function Home() {
+export default function Hold() {
   const [compressedImages, setCompressedImages] = useState([]);
   const [mergedImage, setMergedImage] = useState("");
 
@@ -71,9 +70,8 @@ export default function Home() {
   };
 
   return (
-    <main className={styles.main}>
+    <main>
       <div>
-        <h1>Wisp</h1>
         <h3>Upload images here</h3>
         <form id="uploadImages" encType="multipart/form-data">
           <input
